@@ -11,7 +11,7 @@ void flash_led_connect()
             // Setup Breathing effect pattern data.
     pattern.baseMiniCycleDuration = 0x8;             // 100ms.
     pattern.totalMiniCycles = 0x2;                   // 3 mini cycles. Last one 12.5ms.
-    pattern.totalFullCycles = 0x0;                   // Repeat forever.
+    pattern.totalFullCycles = 0xF;                   // Repeat 15.
     pattern.startIntensity = 0x2;                    // 13%.
 
     pattern.miniCycles[0].ledIntensity = 0xF;        // 100%.
@@ -23,7 +23,7 @@ void flash_led_connect()
 
     u64 uniquePadIds[5] = {0};
 
-    size_t total_entries = 0;
+    s32 total_entries = 0;
 
     Result rc = hidsysGetUniquePadIds(uniquePadIds, 5, &total_entries);
     if (R_FAILED(rc) && rc != MAKERESULT(Module_Libnx, LibnxError_IncompatSysVer))
@@ -41,7 +41,7 @@ void flash_led_disconnect()
     u64 uniquePadIds[2];
     memset(uniquePadIds, 0, sizeof(uniquePadIds));
 
-    size_t total_entries = 0;
+    s32 total_entries = 0;
 
     Result rc = hidsysGetUniquePadsFromNpad(hidGetHandheldMode() ? CONTROLLER_HANDHELD : CONTROLLER_PLAYER_1, uniquePadIds, 2, &total_entries);
     if (R_FAILED(rc) && rc != MAKERESULT(Module_Libnx, LibnxError_IncompatSysVer))

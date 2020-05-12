@@ -43,10 +43,10 @@
 
 #define POLL_UNKNOWN (~(POLLIN | POLLPRI | POLLOUT))
 
-#define XFER_BUFFERSIZE 16384
-#define SOCK_BUFFERSIZE 16384
-#define FILE_BUFFERSIZE 32768
-#define CMD_BUFFERSIZE 4096
+#define XFER_BUFFERSIZE 8192
+#define SOCK_BUFFERSIZE 8192
+#define FILE_BUFFERSIZE 16384
+#define CMD_BUFFERSIZE 2048
 
 int LISTEN_PORT;
 //#define LISTEN_PORT 5000
@@ -1430,14 +1430,11 @@ static void
 ftp_auth_check(ftp_session_t *session, const char *user, const char *pass) 
 {
 	char str_user[100];
-  long _user;
-  _user = ini_gets("User", "user:", "dummy", str_user, sizearray(str_user), inifile); 
+  ini_gets("User", "user:", "dummy", str_user, sizearray(str_user), inifile); 
   char str_pass[100];
-  long _pass;
-  _pass = ini_gets("Password", "password:", "dummy", str_pass, sizearray(str_pass), inifile); 
+  ini_gets("Password", "password:", "dummy", str_pass, sizearray(str_pass), inifile); 
   char str_anony[100];
-  long _anony;
-  _anony = ini_gets("Anonymous", "anonymous:", "dummy", str_anony, sizearray(str_anony), inifile); 
+  ini_gets("Anonymous", "anonymous:", "dummy", str_anony, sizearray(str_anony), inifile); 
   
   if (strcmp("1", str_anony) == 0)
   {      
@@ -1849,8 +1846,8 @@ ftp_session_poll(ftp_session_t *session)
 
   /* disconnected from peer; destroy it and return next session */
   debug_print("disconnected from peer\n");
-  flash_led_disconnect();
-  playMp3("/config/sys-ftpd/disconnect.mp3");
+//  flash_led_disconnect();
+//  playMp3("/config/sys-ftpd/disconnect.mp3");
   return ftp_session_destroy(session);
 }
 
@@ -2021,8 +2018,6 @@ applet_hook(AppletHookType type,
 
 void ftp_pre_init(void)
 {  
-  int rc;
-
   start_time = time(NULL);
 
 
@@ -2069,8 +2064,7 @@ int ftp_init(void)
 
   serv_addr.sin_addr.s_addr = INADDR_ANY;
   char str_port[100];
-  long _port;
-  _port = ini_gets("Port", "port:", "dummy", str_port, sizearray(str_port), inifile); 
+  ini_gets("Port", "port:", "dummy", str_port, sizearray(str_port), inifile); 
   LISTEN_PORT = atoi (str_port);
   serv_addr.sin_port = htons(LISTEN_PORT);
 
@@ -2179,7 +2173,7 @@ ftp_loop(void)
         return LOOP_RESTART;
       }
       flash_led_connect();
-      playMp3("/config/sys-ftpd/connect.mp3");
+//      playMp3("/config/sys-ftpd/connect.mp3");
     }
     else
     {

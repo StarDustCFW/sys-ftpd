@@ -112,7 +112,7 @@ endif
 .PHONY: $(BUILD) clean all
 
 #---------------------------------------------------------------------------------
-all: $(BUILD)
+all: $(BUILD) dist
 
 $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
@@ -121,7 +121,7 @@ $(BUILD):
 #---------------------------------------------------------------------------------
 clean:
 	@echo clean ...
-	@rm -fr $(BUILD) $(TARGET).nsp $(TARGET).npdm $(TARGET).nso $(TARGET).elf
+	@rm -fr $(BUILD) $(TARGET).nsp $(TARGET).npdm $(TARGET).nso $(TARGET).elf sdcard/atmosphere
 
 #---------------------------------------------------------------------------------
 else
@@ -159,3 +159,9 @@ $(OFILES_SRC)	: $(HFILES_BIN)
 #---------------------------------------------------------------------------------------
 endif
 #---------------------------------------------------------------------------------------
+
+dist:
+	mkdir -p sd_card/atmosphere/contents/420000000000000E/flags
+	cp $(OUTPUT).nsp sd_card/atmosphere/contents/420000000000000E/exefs.nsp
+#	touch sd_card/atmosphere/titles/420000000000000E/flags/boot2.flag
+

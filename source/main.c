@@ -20,7 +20,7 @@
 #include "mp3.h"
 
 #define TITLE_ID 0x420000000000000E
-#define HEAP_SIZE 0x000540000
+#define HEAP_SIZE 0x000380000
 
 // we aren't an applet
 u32 __nx_applet_type = AppletType_None;
@@ -132,7 +132,7 @@ int main(int argc, char **argv)
     mp3MutInit();
     pauseInit();
     Thread pauseThread;
-    Result rc = threadCreate(&pauseThread, inputPoller, NULL, 0x4000, 49, 3);
+    Result rc = threadCreate(&pauseThread, inputPoller, NULL, NULL, 0x4000, 49, 3);
     if (R_FAILED(rc))
         fatalLater(rc);
     rc = threadStart(&pauseThread);
